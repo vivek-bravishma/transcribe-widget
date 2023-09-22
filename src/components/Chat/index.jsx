@@ -17,7 +17,7 @@ function Chat() {
   };
 
   useEffect(() => {
-    const socket = io("http://localhost:3000");
+    const socket = io("https://transcribe-api.lab.bravishma.com");
 
     socket.on("data", (data) => {
       console.log("Received data from server:", data);
