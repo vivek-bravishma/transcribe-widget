@@ -1,11 +1,11 @@
 {
-  "name": "GCP CRUD Widget - React",
-  "description": "Basic web component for performing CRUD operations on GCP",
-  "tags": ["widget", "GCP", "api"],
+  "name": "Transcribe-Widget-React",
+  "description": "widget to show voice call transcript",
+  "tags": ["widget", "chat", "transcribe", "webhook", "socket", "api"],
   "version": "1.0.0",
   "id": "1",
-  "element": "<GCP-CRUD-React-Widget></GCP-CRUD-React-Widget>",
+  "element": "<Transcribe-Widget-Chat></Transcribe-Widget-Chat>",
   "icon": "neo-icon-sort",
   "files": ["/dist/Widget.js"],
-  "override_url": "https://gcloud.lab.bravishma.com/"
+  "override_url": "https://transcribe-widget.lab.bravishma.com/"
 }
