@@ -1,0 +1,11 @@
+{
+  "name": "GCP CRUD Widget - React",
+  "description": "Basic web component for performing CRUD operations on GCP",
+  "tags": ["widget", "GCP", "api"],
+  "version": "1.0.0",
+  "id": "1",
+  "element": "<GCP-CRUD-React-Widget></GCP-CRUD-React-Widget>",
+  "icon": "neo-icon-sort",
+  "files": ["/dist/Widget.js"],
+  "override_url": "https://gcloud.lab.bravishma.com/"
+}

@@ -1,0 +1,151 @@
+// Creating the Project#
+
+// About this task#
+// You can create a React Web Component widget. The following instruction provides an example of creating a my-web-comp widget.
+
+// NOTE
+// If you use VS code, ensure that your typescript coming with VS code is v4.0.2 or higher.
+
+// Procedure#
+// Create project structure running the following command in your terminal ⁄ console:
+//  npx create-react-app {{app-name}}
+// Navigate to the src directory in the project folder.
+
+// In the src directory, create a new empty .tsx component file. For testing purposes, you can create Welcome.tsx.
+
+// Add the following code to the Welcome.tsx file:
+
+import React from "react";
+
+class Welcome extends React.Component {
+  render() {
+    return (
+      <div className="neo-widget__content">
+        <div className="neo-widget__header">
+          <div className="neo-widget__header-left">
+            <span className="neo-icon-agents"></span>
+            <p>React</p>
+          </div>
+        </div>
+        <div className="neo-widget__body">
+          <div className="container">
+            <h3>
+              <b>React Web Component</b>
+            </h3>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default Welcome;
+
+// In the same directory, create a new .tsx file. For the purpose of this demo, you can create a MyWebComp.tsx file.
+
+// Import your Welcome React component into MyWebComp.tsx file and transform it into a customElement as follows:
+
+import { createElement } from "react";
+import { render, unmountComponentAtNode } from "react-dom";
+import Welcome from "./Welcome";
+
+class MyWebComp extends HTMLElement {
+  connectedCallback() {
+    render(createElement(Welcome), this);
+  }
+
+  disconnectedCallback() {
+    unmountComponentAtNode(Welcome);
+  }
+}
+
+customElements.define("my-web-comp", MyWebComp);
+
+// Next step#
+// When your project is ready as a Web Component, you must build it for later use.
+
+// Building the Project#
+// About this task#
+// You must build the project to use your widget in Avaya Workspaces.
+
+// Procedure#
+// In the root project folder, create the webpack.config.js file with the following contents:
+
+const path = require("path");
+
+module.exports = {
+  entry: path.resolve(__dirname, "src", "MyWebComp.tsx"),
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "my-web-comp.js",
+  },
+  resolve: {
+    extensions: [".ts", ".tsx", ".js"],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        loader: "ts-loader",
+        options: {
+          compilerOptions: {
+            noEmit: false,
+          },
+        },
+        exclude: /node_modules/,
+        include: path.resolve(__dirname, "src"),
+      },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
+    ],
+  },
+};
+
+// Add build scripts to the package.json file:
+
+// "build": "npm run build:react && npm run build:bundle",
+// "build:react": "react-scripts build",
+// "build:bundle": "webpack --config webpack.config.js"
+
+// Add tsconfig file with the following contents:
+
+// {
+//   "compilerOptions": {
+//     "target": "es2015",
+//     "lib": [
+//       "dom",
+//       "dom.iterable",
+//       "esnext"
+//     ],
+//     "allowJs": true,
+//     "skipLibCheck": true,
+//     "esModuleInterop": true,
+//     "allowSyntheticDefaultImports": true,
+//     "strict": true,
+//     "forceConsistentCasingInFileNames": true,
+//     "noFallthroughCasesInSwitch": true,
+//     "module": "esnext",
+//     "moduleResolution": "node",
+//     "resolveJsonModule": true,
+//     "isolatedModules": true,
+//     "noEmit": true,
+//     "noImplicitAny": false,
+//     "jsx": "react"
+//   },
+//   "include": [
+//     "src"
+//   ]
+// }
+
+// Run the following command to install necessary packages:
+// npm i typescript ts-loader webpack-cli
+
+// Build your project running the following command:
+// npm run build
+
+// The bundled file my-web-comp.js is in the dist folder. Host this folder using HTTP-server.
+
+// Next step#
+// When your project is bundled and built, continue configuring the widget JSON file that you can import in the Widget Manager.
