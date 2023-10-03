@@ -89,9 +89,9 @@ function Chat() {
 	// // ===XXX=== scroll ===XXX===
 
 	useEffect(() => {
-		const socket = io("https://transcribe-api.lab.bravishma.com");
+		// const socket = io("https://transcribe-api.lab.bravishma.com");
 		// const socket = io("http://localhost:3000");
-		// const socket = io("http://localhost:5154");
+		const socket = io("http://localhost:5154");
 
 		socket.on("data", (data) => {
 			console.log("Received data from server:", data);
@@ -111,9 +111,10 @@ function Chat() {
 	return (
 		<div className="chat-container">
 			<div className="chat-messages">
-				{messages.map((data, index) => (
-					<Message data={data} key={index} />
-				))}
+				{messages.map((data, index) => {
+					if (!data.original_text) return;
+					return <Message data={data} key={index} />;
+				})}
 				<div className="last-msg" ref={seekLastEle}></div>
 			</div>
 			{/* <form className="chat-input" onSubmit={handleSendMessage}>
