@@ -52,7 +52,7 @@ function Chat() {
           </div>
         ))}
       </div>
-      <form className="chat-input" onSubmit={handleSendMessage}>
+      {/* <form className="chat-input" onSubmit={handleSendMessage}>
         <input
           className="chat-box"
           type="text"
@@ -61,7 +61,7 @@ function Chat() {
           onChange={(e) => setNewMessage(e.target.value)}
         />
         <button className="chat-btn">Send</button>
-      </form>
+      </form> */}
     </div>
   );
 }
