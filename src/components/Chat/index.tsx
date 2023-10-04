@@ -2,64 +2,92 @@ import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import "./style.css";
 
-// const dumData = [
-// 	{
-// 		intent: "test",
-// 		topics: "",
-// 		sentiment: "",
-// 		transcription_quality: "",
-// 		original_language: "",
-// 		translated_text: "",
-// 		original_text:
-// 			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque quos repellat molestiae quia vitae, fugiat eligendi nemo porro itaque obcaecati neque et sequi autem animi odio quo hic illo numquam ipsa explicabo, praesentium impedit? Nesciunt, quidem odit laborum possimus eveniet ipsum quo consectetur non hic quod ullam nihil, ex culpa!",
-// 		confidence: 1,
-// 		utcTimestamp: "12:15",
-// 		speaker: "Customer",
-// 		bodyRaw: "{{ci.text}}",
-// 	},
-// 	{
-// 		intent: "test",
-// 		topics: "",
-// 		sentiment: "",
-// 		transcription_quality: "",
-// 		original_language: "",
-// 		translated_text: "",
-// 		original_text:
-// 			"{{context.subscriptiontext.details.transcriptionResults[0].text}}",
-// 		confidence: 0.5,
-// 		utcTimestamp: "12:15",
-// 		speaker: "Agent",
-// 		bodyRaw: "{{ci.text}}",
-// 	},
-// 	{
-// 		intent: "test",
-// 		topics: "",
-// 		sentiment: "",
-// 		transcription_quality: "",
-// 		original_language: "",
-// 		translated_text: "",
-// 		original_text:
-// 			"{{context.subscriptiontext.details.transcriptionResults[0].text}}",
-// 		confidence: 0.2,
-// 		utcTimestamp: "12:15",
-// 		speaker: "{{cc.speaker}}",
-// 		bodyRaw: "{{ci.text}}",
-// 	},
-// ];
+import soundwaveImg from '../../assets/images/soundwave.gif'
+
+const AGENT = "Agent";
+const CUSTOMER = "Customer";
+
+const dumData = [
+	{
+		intent: "test",
+		topics: "banking",
+		sentiment: "128545",
+		transcription_quality: "",
+		original_language: "",
+		translated_text:
+			"The company itself is a very successful company. And those who are repulsed by the trouble of life, let no one be blinded by the hatred of the soul, which I shall never explain here.",
+		original_text:
+			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque quos repellat molestiae quia vitae, fugiat eligendi nemo porro itaque obcaecati neque et sequi autem animi odio quo hic illo numquam ipsa explicabo.",
+		confidence: 1,
+		utcTimestamp: "12:15",
+		speaker: CUSTOMER,
+		bodyRaw: "{{ci.text}}",
+	},
+	{
+		intent: "test",
+		topics: "banking",
+		sentiment: "128545",
+		transcription_quality: "",
+		original_language: "",
+		translated_text:
+			"The company itself is a very successful company. And those who are repulsed by the trouble of life, let no one be blinded by the hatred of the soul, which I shall never explain here.",
+		original_text:
+			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque quos repellat molestiae quia vitae, fugiat eligendi nemo porro itaque obcaecati neque et sequi autem animi odio quo hic illo numquam ipsa explicabo.",
+		confidence: 1,
+		utcTimestamp: "12:15",
+		speaker: AGENT,
+		bodyRaw: "{{ci.text}}",
+	},
+	{
+		intent: "test",
+		topics: "banking",
+		sentiment: "",
+		transcription_quality: "",
+		original_language: "",
+		translated_text: "what do you say??",
+		original_text: "Tu ergo quid dicis??",
+		confidence: 0.5,
+		utcTimestamp: "12:15",
+		speaker: AGENT,
+		bodyRaw: "{{ci.text}}",
+	},
+	{
+		intent: "test",
+		topics: "banking",
+		sentiment: "129320",
+		transcription_quality: "",
+		original_language: "",
+		translated_text: "",
+		original_text:
+			"{{context.subscriptiontext.details.transcriptionResults[0].text}}",
+		confidence: 0.2,
+		utcTimestamp: "12:15",
+		speaker: "{{cc.speaker}}",
+		bodyRaw: "{{ci.text}}",
+	},
+];
 
 function Chat() {
-	const [messages, setMessages] = useState<any>([]);
+	// const [messages, setMessages] = useState<any>([]);
 	const [newMessage, setNewMessage] = useState("");
 	const seekLastEle = useRef<HTMLDivElement>(null);
 
 	// --- dev ---
 
-	// const [messages, setMessages] = useState<any>(dumData);
-	// useEffect(() => {
-	// 	messages.forEach((data) => {
-	// 		setMessages((prev) => [...prev, data]);
-	// 	});
-	// }, []);
+	const [messages, setMessages] = useState<any>(dumData);
+	useEffect(() => {
+		messages.forEach((data, index) => {
+			console.log("hi=> ", index);
+			setMessages((prev) => [...prev, data]);
+		});
+
+		return () => {
+			messages.forEach((data, index) => {
+				console.log("hello=> ", index);
+				setMessages("");
+			});
+		};
+	}, []);
 
 	// XXX dev XXX
 
@@ -76,8 +104,6 @@ function Chat() {
 		setNewMessage("");
 	};
 
-	// // ====== scroll ======
-
 	const Scroll = () => {
 		seekLastEle.current?.scrollIntoView();
 	};
@@ -85,8 +111,6 @@ function Chat() {
 	useEffect(() => {
 		Scroll();
 	}, [messages]);
-
-	// // ===XXX=== scroll ===XXX===
 
 	useEffect(() => {
 		// const socket = io("https://transcribe-api.lab.bravishma.com");
@@ -110,6 +134,11 @@ function Chat() {
 
 	return (
 		<div className="chat-container">
+			{/* <div className="chat-header">
+				<div className="logo-conainter"><img src={soundwaveImg} alt="SoundWave gif" /></div>
+				<div className="checkbox-container">fdsa</div>
+				<div className="overall-sentiment-container">qwer</div>
+			</div> */}
 			<div className="chat-messages">
 				{messages.map((data, index) => {
 					if (!data.original_text) return;
@@ -146,25 +175,71 @@ function Message({ data }) {
 		speaker,
 		bodyRaw,
 	} = data;
+
 	return (
-		<div className="chat-message-container">
-			<div className={`chat-message`}>
-				<span className="chat-sender">{speaker}</span>
-				<span
-					className="chat-text"
-					style={{
-						color: `rgba(0, 0, 0, ${
-							confidence > 0 ? confidence : 0.1
-						})`,
-					}}>
-					{" "}
-					{original_text}{" "}
-				</span>
-				<span className="chat-time"> {utcTimestamp} </span>
+		<div
+			className={`chat-message-container ${speaker.toLocaleLowerCase()}`}>
+			<div className="message-title">
+				<span className="message-sender">{speaker}</span>
+				<span className="message-time">[{utcTimestamp}]</span>
 			</div>
-			<div className="chat-sentiment-icon">😥</div>
+			<div className="message-content-row">
+				<div className={`chat-message`}>
+					<span
+						className="chat-text"
+						style={{
+							color: `rgba(0, 0, 0, ${
+								confidence > 0.4 ? confidence : 0.4
+							})`,
+						}}>
+						<span className="original-text">{original_text}</span>
+						<span className="translated-text">
+							{translated_text && `[${translated_text}]`}
+						</span>
+					</span>
+				</div>
+				<div className="chat-sentiment-icon">
+					{sentiment && `${String.fromCodePoint(sentiment)}`}
+				</div>
+			</div>
+
+			{speaker.toLocaleLowerCase() !== "agent" && (
+				<div className="message-meta">
+					<span className="message-topic">Topics : {topics}</span>
+					<span className="message-intent">Intent : {intent}</span>
+				</div>
+			)}
 		</div>
 	);
 }
 
 export default Chat;
+
+// return (
+//   <div className={`chat-message-container ${speaker} `}>
+//     {/* <div className="message-row"> */}
+//       <div className={`chat-message`}>
+//         <div className="chat-message-title">
+//           <span className="chat-sender">{speaker}</span>
+//           <span className="chat-time">[{utcTimestamp}]</span>
+//         </div>
+//         <span
+//           className="chat-text"
+//           style={{
+//             color: `rgba(0, 0, 0, ${
+//               confidence > 0 ? confidence : 0.1
+//             })`,
+//           }}>
+//           <span className="original-text">{original_text}</span>
+//           <span className="translated-text">
+//             {translated_text}
+//           </span>
+//         </span>
+//         {/* <span className="chat-time"> {utcTimestamp} </span> */}
+//       </div>
+//     {/* </div> */}
+//     <div className="chat-sentiment-icon">
+//       {String.fromCodePoint(sentiment)}
+//     </div>
+//   </div>
+// );
