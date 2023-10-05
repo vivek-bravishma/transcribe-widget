@@ -1,35 +1,79 @@
 .chat-container {
-	background: #d2d2d2;
+	background: #ededed;
 	/* padding: 10px; */
 	border-radius: 10px;
-	width: 500px;
-	height: 500px;
+	width: 90%;
 	overflow: hidden;
+	height: 90%;
+	/* height: 500px; */
+	/* min-height: 90%; */
 }
 
 .chat-header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	background: red;
+	/* background: #6c6c6c;*/
+	background: #666666;
 	height: 12%;
+	width: 100%;
+	color: white;
 }
+
+/* .hsept{
+
+} */
+
+.chat-header > div {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	width: 100%;
+	/* padding: 10px 20px; */
+}
+
 .logo-conainter {
 	flex: 1.5;
 	/* width: 20%; */
-	background: blue;
+	/* background: blue; */
+	/* background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/building.jpg); */
+	/* background-color: red;
+	background-blend-mode: multiply; */
+	/* object-fit: cover; */
 }
 .logo-conainter img {
 	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	mix-blend-mode: lighten;
 }
 
 .checkbox-container {
 	flex: 2;
-	background: yellow;
+	justify-content: space-evenly !important;
 }
+
+.checkbox-container div {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
 .overall-sentiment-container {
-	background: green;
+	/* background: green; */
 	flex: 1.5;
+	font-size: 2rem;
+	border-left: 2px solid black;
+	border-right: 2px solid black;
+}
+
+.header-checkbox {
+}
+
+.header-cb-text {
+	font-size: 0.8rem;
 }
 
 .chat-messages {
@@ -37,7 +81,7 @@
 	/* width: 500px;
 	height: 500px; */
 	width: 100%;
-	height: 100%;
+	height: 88%;
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
@@ -129,12 +173,12 @@
 	gap: 1rem;
 }
 .message-meta span {
-	background: rgb(229 229 229);
-	padding: 2px 5px;
-	border-radius: 5px;
+	background: #a0b2ff;
+	padding: 4px 8px;
+	border-radius: 50vw;
 	margin: 3px 0;
 	font-size: 0.8rem;
-	box-shadow: 0 0 3px 0 black;
+	/* box-shadow: 0 0 3px 0 black; */
 }
 
 /* chat type  */
@@ -153,3 +197,106 @@
 	padding: 5px;
 	background: skyblue;
 } */
+
+/* .header-checkbox {
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	height: 2.1rem;
+	display: inline-block;
+	vertical-align: top;
+	position: relative;
+	margin: 0;
+	cursor: pointer;
+	border: 1px solid #4f565d;
+	background: #fff;
+	transition: background 0.3s, border-color 0.3s, outline 0.2s;
+}
+.header-checkbox:after {
+	content: "";
+	display: block;
+	left: 0;
+	top: 0;
+	position: absolute;
+	transition: transform 0.3s ease, opacity 0.2s;
+}
+.header-checkbox:checked {
+	background-color: #275efe;
+	border-color: #275efe;
+	transition: transform 0.6s cubic-bezier(0.2, 0.85, 0.32, 1.2), opacity 0.3s;
+}
+.header-checkbox:disabled {
+	background-color: #f6f8ff;
+	border-color: #8f8f8f;
+	cursor: not-allowed;
+}
+.header-checkbox:disabled:checked {
+	background-color: #8f8f8f;
+}
+.header-checkbox {
+	width: 2.1rem;
+	border-radius: 0.7rem;
+}
+.header-checkbox:after {
+	border: 2px solid #fff;
+	height: 45%;
+	width: 25%;
+	border-top: 0;
+	border-left: 0;
+	left: 38%;
+	top: 20%;
+	transform: rotate(20deg);
+}
+.header-checkbox:checked:after {
+	transform: rotate(43deg);
+} */
+
+.header-checkbox {
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	height: 2.1rem;
+	display: inline-block;
+	vertical-align: top;
+	position: relative;
+	margin: 0;
+	cursor: pointer;
+	border: 1px solid #4f565d;
+	background: #fff;
+	transition: background 0.3s, border-color 0.3s, outline 0.2s;
+	width: 2.1rem;
+	border-radius: 0.7rem;
+}
+.header-checkbox:after {
+	content: "";
+	display: block;
+	left: 0;
+	top: 0;
+	position: absolute;
+	border: 2px solid #fff;
+	height: 45%;
+	width: 25%;
+	border-top: 0;
+	border-left: 0;
+	left: 38%;
+	top: 20%;
+	transform: rotate(20deg);
+	transition: transform 0.3s ease, opacity 0.2s;
+}
+.header-checkbox:checked {
+	background-color: #275efe;
+	border-color: #275efe;
+	transition: transform 0.6s cubic-bezier(0.2, 0.85, 0.32, 1.2), opacity 0.3s;
+}
+.header-checkbox:disabled {
+	background-color: #f6f8ff;
+	border-color: #8f8f8f;
+	cursor: not-allowed;
+}
+.header-checkbox:disabled:checked {
+	background-color: #8f8f8f;
+}
+
+.header-checkbox:checked:after {
+	transform: rotate(43deg);
+}

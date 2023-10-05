@@ -2,92 +2,112 @@ import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import "./style.css";
 
-import soundwaveImg from '../../assets/images/soundwave.gif'
+import soundwaveImg from "../../assets/images/soundwave.gif";
 
 const AGENT = "Agent";
 const CUSTOMER = "Customer";
 
-const dumData = [
-	{
-		intent: "test",
-		topics: "banking",
-		sentiment: "128545",
-		transcription_quality: "",
-		original_language: "",
-		translated_text:
-			"The company itself is a very successful company. And those who are repulsed by the trouble of life, let no one be blinded by the hatred of the soul, which I shall never explain here.",
-		original_text:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque quos repellat molestiae quia vitae, fugiat eligendi nemo porro itaque obcaecati neque et sequi autem animi odio quo hic illo numquam ipsa explicabo.",
-		confidence: 1,
-		utcTimestamp: "12:15",
-		speaker: CUSTOMER,
-		bodyRaw: "{{ci.text}}",
-	},
-	{
-		intent: "test",
-		topics: "banking",
-		sentiment: "128545",
-		transcription_quality: "",
-		original_language: "",
-		translated_text:
-			"The company itself is a very successful company. And those who are repulsed by the trouble of life, let no one be blinded by the hatred of the soul, which I shall never explain here.",
-		original_text:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque quos repellat molestiae quia vitae, fugiat eligendi nemo porro itaque obcaecati neque et sequi autem animi odio quo hic illo numquam ipsa explicabo.",
-		confidence: 1,
-		utcTimestamp: "12:15",
-		speaker: AGENT,
-		bodyRaw: "{{ci.text}}",
-	},
-	{
-		intent: "test",
-		topics: "banking",
-		sentiment: "",
-		transcription_quality: "",
-		original_language: "",
-		translated_text: "what do you say??",
-		original_text: "Tu ergo quid dicis??",
-		confidence: 0.5,
-		utcTimestamp: "12:15",
-		speaker: AGENT,
-		bodyRaw: "{{ci.text}}",
-	},
-	{
-		intent: "test",
-		topics: "banking",
-		sentiment: "129320",
-		transcription_quality: "",
-		original_language: "",
-		translated_text: "",
-		original_text:
-			"{{context.subscriptiontext.details.transcriptionResults[0].text}}",
-		confidence: 0.2,
-		utcTimestamp: "12:15",
-		speaker: "{{cc.speaker}}",
-		bodyRaw: "{{ci.text}}",
-	},
-];
+// const dumData = [
+// 	{
+// 		intent: "test",
+// 		topics: "banking",
+// 		sentiment: "128545",
+// 		transcription_quality: "",
+// 		original_language: "",
+// 		translated_text:
+// 			"The company itself is a very successful company. And those who are repulsed by the trouble of life, let no one be blinded by the hatred of the soul, which I shall never explain here.",
+// 		original_text:
+// 			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque quos repellat molestiae quia vitae, fugiat eligendi nemo porro itaque obcaecati neque et sequi autem animi odio quo hic illo numquam ipsa explicabo.",
+// 		confidence: 1,
+// 		utcTimestamp: "12:15",
+// 		speaker: CUSTOMER,
+// 		bodyRaw: "{{ci.text}}",
+// 		overallsentiment: "",
+// 		greeting_done: true,
+// 		recording_alert_done: true,
+// 		thankyou_done: false,
+// 	},
+// 	{
+// 		intent: "test",
+// 		topics: "banking",
+// 		sentiment: "128545",
+// 		transcription_quality: "",
+// 		original_language: "",
+// 		translated_text:
+// 			"The company itself is a very successful company. And those who are repulsed by the trouble of life, let no one be blinded by the hatred of the soul, which I shall never explain here.",
+// 		original_text:
+// 			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque quos repellat molestiae quia vitae, fugiat eligendi nemo porro itaque obcaecati neque et sequi autem animi odio quo hic illo numquam ipsa explicabo.",
+// 		confidence: 1,
+// 		utcTimestamp: "12:15",
+// 		speaker: AGENT,
+// 		bodyRaw: "{{ci.text}}",
+// 		overallsentiment: "",
+// 		greeting_done: true,
+// 		recording_alert_done: true,
+// 		thankyou_done: false,
+// 	},
+// 	{
+// 		intent: "test",
+// 		topics: "banking",
+// 		sentiment: "",
+// 		transcription_quality: "",
+// 		original_language: "",
+// 		translated_text: "what do you say??",
+// 		original_text: "Tu ergo quid dicis??",
+// 		confidence: 0.5,
+// 		utcTimestamp: "12:15",
+// 		speaker: AGENT,
+// 		bodyRaw: "{{ci.text}}",
+// 		overallsentiment: "",
+// 		greeting_done: true,
+// 		recording_alert_done: true,
+// 		thankyou_done: false,
+// 	},
+// 	{
+// 		intent: "test",
+// 		topics: "banking",
+// 		sentiment: "129320",
+// 		transcription_quality: "",
+// 		original_language: "",
+// 		translated_text: "",
+// 		original_text:
+// 			"{{context.subscriptiontext.details.transcriptionResults[0].text}}",
+// 		confidence: 0.2,
+// 		utcTimestamp: "12:15",
+// 		speaker: "{{cc.speaker}}",
+// 		bodyRaw: "{{ci.text}}",
+// 		overallsentiment: "128545",
+// 		greeting_done: true,
+// 		recording_alert_done: true,
+// 		thankyou_done: false,
+// 	},
+// ];
 
 function Chat() {
-	// const [messages, setMessages] = useState<any>([]);
+	const [messages, setMessages] = useState<any>([]);
 	const [newMessage, setNewMessage] = useState("");
+	const [latestMessage, setLatestMessage] = useState<any>("");
 	const seekLastEle = useRef<HTMLDivElement>(null);
 
 	// --- dev ---
 
-	const [messages, setMessages] = useState<any>(dumData);
-	useEffect(() => {
-		messages.forEach((data, index) => {
-			console.log("hi=> ", index);
-			setMessages((prev) => [...prev, data]);
-		});
+	// const [messages, setMessages] = useState<any>(dumData);
+	// const [latestMessage, setLatestMessage] = useState<any>(dumData);
+	// useEffect(() => {
+	// 	messages.forEach((data, index) => {
+	// 		console.log("hi=> ", index);
+	// 		setLatestMessage(data);
+	// 		setMessages((prev) => [...prev, data]);
+	// 	});
 
-		return () => {
-			messages.forEach((data, index) => {
-				console.log("hello=> ", index);
-				setMessages("");
-			});
-		};
-	}, []);
+	// 	return () => {
+	// 		messages.forEach((data, index) => {
+	// 			console.log("hello=> ", index);
+	// 			setLatestMessage("");
+	// 			setMessages("");
+	// 		});
+	// 	};
+	// }, []);
 
 	// XXX dev XXX
 
@@ -113,9 +133,9 @@ function Chat() {
 	}, [messages]);
 
 	useEffect(() => {
-		// const socket = io("https://transcribe-api.lab.bravishma.com");
+		const socket = io("https://transcribe-api.lab.bravishma.com");
 		// const socket = io("http://localhost:3000");
-		const socket = io("http://localhost:5154");
+		// const socket = io("http://localhost:5154");
 
 		socket.on("data", (data) => {
 			console.log("Received data from server:", data);
@@ -125,6 +145,7 @@ function Chat() {
 			console.log("text--> ", text);
 
 			setMessages((prev) => [...prev, data]);
+			setLatestMessage(data);
 		});
 
 		return () => {
@@ -134,11 +155,7 @@ function Chat() {
 
 	return (
 		<div className="chat-container">
-			{/* <div className="chat-header">
-				<div className="logo-conainter"><img src={soundwaveImg} alt="SoundWave gif" /></div>
-				<div className="checkbox-container">fdsa</div>
-				<div className="overall-sentiment-container">qwer</div>
-			</div> */}
+			<Header data={latestMessage} />
 			<div className="chat-messages">
 				{messages.map((data, index) => {
 					if (!data.original_text) return;
@@ -146,16 +163,18 @@ function Chat() {
 				})}
 				<div className="last-msg" ref={seekLastEle}></div>
 			</div>
-			{/* <form className="chat-input" onSubmit={handleSendMessage}>
-        <input
-          className="chat-box"
-          type="text"
-          placeholder="Type your message..."
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-        />
-        <button className="chat-btn">Send</button>
-      </form>  */}
+			{/* 
+			<form className="chat-input" onSubmit={handleSendMessage}>
+				<input
+					className="chat-box"
+					type="text"
+					placeholder="Type your message..."
+					value={newMessage}
+					onChange={(e) => setNewMessage(e.target.value)}
+				/>
+				<button className="chat-btn">Send</button>
+			</form>
+			 */}
 		</div>
 	);
 }
@@ -209,6 +228,61 @@ function Message({ data }) {
 					<span className="message-intent">Intent : {intent}</span>
 				</div>
 			)}
+		</div>
+	);
+}
+
+function Header({ data }) {
+	console.log("header--> ", data);
+	const {
+		overallsentiment,
+		greeting_done,
+		recording_alert_done,
+		thankyou_done,
+	} = data;
+	console.log(
+		overallsentiment,
+		greeting_done,
+		recording_alert_done,
+		thankyou_done
+	);
+	return (
+		<div className="chat-header">
+			<div className="logo-conainter">
+				<img src={soundwaveImg} alt="SoundWave gif" />
+			</div>
+			<div className="overall-sentiment-container">
+				{overallsentiment && String.fromCodePoint(overallsentiment)}
+			</div>
+			<div className="checkbox-container">
+				<div className="">
+					<input
+						className="header-checkbox"
+						disabled={true}
+						checked={greeting_done}
+						type="checkbox"
+					/>
+					<label className="header-cb-text">Greeting</label>
+				</div>
+				<div className="">
+					<input
+						className="header-checkbox"
+						type="checkbox"
+						disabled={true}
+						checked={recording_alert_done}
+					/>
+					<label className="header-cb-text">Recording Alert</label>
+				</div>
+				<div className="">
+					<input
+						className="header-checkbox"
+						type="checkbox"
+						disabled={true}
+						checked={thankyou_done}
+					/>
+					<label className="header-cb-text">Thank You</label>
+				</div>
+			</div>
 		</div>
 	);
 }
