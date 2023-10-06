@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import "./style.css";
-
+import CONFIG from "../../utils/config";
 import soundwaveImg from "../../assets/images/soundwave.gif";
+
+const { BASE_URL, SOCKET_URL } = CONFIG;
 
 const AGENT = "Agent";
 const CUSTOMER = "Customer";
@@ -133,9 +135,7 @@ function Chat() {
 	}, [messages]);
 
 	useEffect(() => {
-		const socket = io("https://transcribe-api.lab.bravishma.com");
-		// const socket = io("http://localhost:3000");
-		// const socket = io("http://localhost:5154");
+		const socket = io(SOCKET_URL);
 
 		socket.on("data", (data) => {
 			console.log("Received data from server:", data);
@@ -249,38 +249,62 @@ function Header({ data }) {
 	return (
 		<div className="chat-header">
 			<div className="logo-conainter">
-				<img src={soundwaveImg} alt="SoundWave gif" />
+				<img
+					src={`${BASE_URL}/assets/images/soundwave.gif`}
+					alt="SoundWave gif"
+				/>
 			</div>
 			<div className="overall-sentiment-container">
 				{overallsentiment && String.fromCodePoint(overallsentiment)}
 			</div>
 			<div className="checkbox-container">
-				<div className="">
-					<input
+				<div className="checkbox-inner-contnr">
+					<div className="">
+						{/* <input
 						className="header-checkbox"
 						disabled={true}
 						checked={greeting_done}
 						type="checkbox"
-					/>
-					<label className="header-cb-text">Greeting</label>
-				</div>
-				<div className="">
-					<input
+					/> */}
+						<div className="cb-icon">
+							{greeting_done
+								? String.fromCodePoint(9989)
+								: String.fromCodePoint(10060)}
+						</div>
+						<label className="header-cb-text">Greeting</label>
+					</div>
+					<div className="">
+						{/* <input
 						className="header-checkbox"
 						type="checkbox"
 						disabled={true}
 						checked={recording_alert_done}
-					/>
-					<label className="header-cb-text">Recording Alert</label>
-				</div>
-				<div className="">
-					<input
+					/> */}
+						<div className="cb-icon">
+							{recording_alert_done
+								? String.fromCodePoint(9989)
+								: String.fromCodePoint(10060)}
+						</div>
+
+						<label className="header-cb-text">
+							Recording Alert
+						</label>
+					</div>
+					<div className="">
+						{/* <input
 						className="header-checkbox"
 						type="checkbox"
 						disabled={true}
 						checked={thankyou_done}
-					/>
-					<label className="header-cb-text">Thank You</label>
+					/> */}
+						<div className="cb-icon">
+							{thankyou_done
+								? String.fromCodePoint(9989)
+								: String.fromCodePoint(10060)}
+						</div>
+
+						<label className="header-cb-text">Thank You</label>
+					</div>
 				</div>
 			</div>
 		</div>
