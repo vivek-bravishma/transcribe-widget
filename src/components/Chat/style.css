@@ -1,3 +1,16 @@
+.main-widget-container {
+    /* background: yellowgreen; */
+    /* padding: 10px; */
+    /* border-radius: 10px; */
+    width: 100%;
+    overflow: hidden;
+    height: 100%;
+    /* height: 500px; */
+    /* min-height: 90%; */
+    display: flex;
+    flex-direction: column;
+}
+
 /* tooltip */
 .tw-tooltip {
     position: relative;
@@ -35,7 +48,7 @@
     /* border-radius: 10px; */
     width: 100%;
     overflow: hidden;
-    height: 100%;
+    height: 60%;
     /* height: 500px; */
     /* min-height: 90%; */
     display: flex;
@@ -115,8 +128,8 @@
     justify-content: center;
 }
 
-.cb-ctr {
-}
+/* .cb-ctr {
+} */
 
 .cb-icon {
     font-size: 1.5rem;
@@ -134,8 +147,8 @@
     width: 100%;
 }
 
-.header-checkbox {
-}
+/* .header-checkbox {
+} */
 
 .header-cb-text {
     font-size: 0.8rem;
@@ -157,9 +170,9 @@
 	scrollbar-width: none; */
 }
 
-.chat-messages::-webkit-scrollbar {
-    /* display: none; */
-}
+/* .chat-messages::-webkit-scrollbar { */
+/* display: none; */
+/* } */
 
 .chat-message-container {
     display: flex;

@@ -1,0 +1,5 @@
+.adaptive-card-container {
+    height: 40%;
+    /* background: red; */
+    overflow: scroll;
+}

@@ -3,12 +3,14 @@ import './style.css';
 import CONFIG from '../../utils/config';
 import { ConnectionState } from '../Socket/ConnectionState';
 import { socket } from '../../utils/socket';
+import AdaptiveCardComp from '../AdaptiveCard';
 
 const { BASE_URL } = CONFIG;
 
 function Chat() {
     const [messages, setMessages] = useState<any>([]);
     const [latestMessage, setLatestMessage] = useState<any>('');
+    const [adaptiveCardJson, setAdaptiveCardJson] = useState({});
     const seekLastEle = useRef<HTMLDivElement>(null);
 
     const [isConnected, setIsConnected] = useState(socket.connected);
@@ -33,8 +35,9 @@ function Chat() {
         function onMessage(data) {
             console.log('Received data from server:', data);
 
-            const { original_text: text, speaker: sender } = data;
-            console.log('text--> ', text);
+            if (data.adaptive_card_json) {
+                setAdaptiveCardJson(data.adaptive_card_json);
+            }
 
             setMessages((prev) => [...prev, data]);
             setLatestMessage(data);
@@ -52,15 +55,19 @@ function Chat() {
     }, []);
 
     return (
-        <div className='chat-container'>
-            <Header data={latestMessage} isConnected={isConnected} />
-            <div className='chat-messages'>
-                {messages.map((data, index) => {
-                    if (!data.original_text) return;
-                    return <Message data={data} key={index} />;
-                })}
-                <div className='last-msg' ref={seekLastEle}></div>
+        <div className='main-widget-container'>
+            <div className='chat-container'>
+                <Header data={latestMessage} isConnected={isConnected} />
+                <div className='chat-messages'>
+                    {messages.map((data, index) => {
+                        if (!data.original_text) return;
+                        return <Message data={data} key={index} />;
+                    })}
+                    <div className='last-msg' ref={seekLastEle}></div>
+                </div>
             </div>
+            <AdaptiveCardComp card={adaptiveCardJson} />
+            {/* <AdaptiveCard card={card} /> */}
         </div>
     );
 }

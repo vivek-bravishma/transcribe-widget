@@ -25,9 +25,7 @@ export function ConnectionState({ isConnected }) {
                     <span
                         className='connection-state__icon connection-state__icon--connected neo-icon-socket-connected'
                         aria-label='Socket Connection state - Connected'
-                    >
-                        c
-                    </span>
+                    ></span>
                     <span className='tw-tooltip-text'>Connected</span>
                 </>
             ) : (
@@ -36,9 +34,7 @@ export function ConnectionState({ isConnected }) {
                         className='connection-state__icon connection-state__icon--disconnected neo-icon-socket-disconnected'
                         aria-label='Socket Connection state - Disconnected'
                         onClick={connect}
-                    >
-                        dc
-                    </span>
+                    ></span>
                     <span className='tw-tooltip-text'>Reconnect</span>
                 </>
             )}
