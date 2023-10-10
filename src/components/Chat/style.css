@@ -1,26 +1,26 @@
 /* tooltip */
-.tooltip {
-	position: relative;
-	display: inline-block;
+.tw-tooltip {
+  position: relative;
+  display: inline-block;
 }
 
-.tooltip .tooltiptext {
-	visibility: hidden;
-	width: 120px;
-	background-color: black;
-	color: #fff;
-	text-align: center;
-	border-radius: 6px;
-	padding: 5px 0;
+.tw-tooltip .tw-tooltip-text {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
 
-	/* Position the tooltip */
-	position: absolute;
-	z-index: 1;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
 }
 
-.tooltip:hover .tooltiptext {
-	font-size: 0.8rem;
-	visibility: visible;
+.tw-tooltip:hover .tw-tooltip-text {
+  font-size: 0.8rem;
+  visibility: visible;
 }
 
 /* <div class="tooltip">Hover over me
@@ -30,28 +30,28 @@
 /* tooltip */
 
 .chat-container {
-	background: #ededed;
-	/* padding: 10px; */
-	/* border-radius: 10px; */
-	width: 100%;
-	overflow: hidden;
-	height: 100%;
-	/* height: 500px; */
-	/* min-height: 90%; */
-	display: flex;
-	flex-direction: column;
+  background: #ededed;
+  /* padding: 10px; */
+  /* border-radius: 10px; */
+  width: 100%;
+  overflow: hidden;
+  height: 100%;
+  /* height: 500px; */
+  /* min-height: 90%; */
+  display: flex;
+  flex-direction: column;
 }
 
 .chat-header {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	/* background: #6c6c6c;*/
-	background: #0066ff;
-	/* height: 12%; */
-	padding: 0.5rem 0;
-	width: 100%;
-	color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* background: #6c6c6c;*/
+  background: #0066ff;
+  /* height: 12%; */
+  padding: 0.5rem 0;
+  width: 100%;
+  color: white;
 }
 
 /* .hsept{
@@ -67,184 +67,184 @@
 } */
 
 .logo-conainter {
-	/* flex: 1.5; */
-	flex: 1;
-	/* width: 20%; */
-	/* background: blue; */
-	/* background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/building.jpg); */
-	/* background-color: red;
+  /* flex: 1.5; */
+  flex: 1;
+  /* width: 20%; */
+  /* background: blue; */
+  /* background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/building.jpg); */
+  /* background-color: red;
 	background-blend-mode: multiply; */
-	/* object-fit: cover; */
-	border-left: 2px solid black;
-	border-right: 2px solid black;
+  /* object-fit: cover; */
+  border-left: 2px solid black;
+  border-right: 2px solid black;
 }
 .logo-conainter img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	/* mix-blend-mode: lighten; */
-	mix-blend-mode: color-dodge;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* mix-blend-mode: lighten; */
+  mix-blend-mode: color-dodge;
 }
 
 .checkbox-container {
-	/* flex: 2; */
-	flex: 1;
-	/* justify-content: space-evenly !important;
+  /* flex: 2; */
+  flex: 1;
+  /* justify-content: space-evenly !important;
 	align-items: flex-start !important; */
-	/* gap: 5px;
+  /* gap: 5px;
 	text-align: center; */
-	display: block !important;
+  display: block !important;
 }
 
 .checkbox-inner-contnr {
-	height: 100%;
-	/* width: 100%; */
-	display: flex;
-	flex-direction: row;
-	align-items: baseline;
-	justify-content: space-evenly;
-	text-align: center;
-	gap: 5px;
-	margin: 0 3px;
+  height: 100%;
+  /* width: 100%; */
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-evenly;
+  text-align: center;
+  gap: 5px;
+  margin: 0 3px;
 }
 
 .checkbox-inner-contnr div {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .cb-ctr {
 }
 
 .cb-icon {
-	font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 .overall-sentiment-container {
-	/* background: green; */
-	/* flex: 1.5; */
-	flex: 1;
-	/* font-size: 2rem; */
-	font-size: 1.8rem;
-	display: flex;
-	align-items: center;
-	justify-content: space-evenly;
-	height: 100%;
-	width: 100%;
+  /* background: green; */
+  /* flex: 1.5; */
+  flex: 1;
+  /* font-size: 2rem; */
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 100%;
+  width: 100%;
 }
 
 .header-checkbox {
 }
 
 .header-cb-text {
-	font-size: 0.8rem;
+  font-size: 0.8rem;
 }
 
 .chat-messages {
-	background: transparent;
-	/* width: 500px;
+  background: transparent;
+  /* width: 500px;
 	height: 500px; */
-	/* height: 88%; */
-	width: 100%;
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-	padding: 10px;
-	overflow: scroll;
-	/* -ms-overflow-style: none;
+  /* height: 88%; */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 10px;
+  overflow: scroll;
+  /* -ms-overflow-style: none;
 	scrollbar-width: none; */
 }
 
 .chat-messages::-webkit-scrollbar {
-	/* display: none; */
+  /* display: none; */
 }
 
 .chat-message-container {
-	display: flex;
-	/* align-items: center;
+  display: flex;
+  /* align-items: center;
 	flex-direction: column; */
-	flex-direction: column;
-	/* align-items: flex-start; */
-	gap: 0.15rem;
-	text-align: justify;
+  flex-direction: column;
+  /* align-items: flex-start; */
+  gap: 0.15rem;
+  text-align: justify;
 }
 
 .message-content-row {
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .chat-message {
-	color: black;
-	background: #fff;
-	width: fit-content;
-	max-width: 80%;
-	padding: 10px 20px;
-	border-radius: 0 10px 10px 10px;
-	/* display: flex;
+  color: black;
+  background: #fff;
+  width: fit-content;
+  max-width: 80%;
+  padding: 10px 20px;
+  border-radius: 0 10px 10px 10px;
+  /* display: flex;
 	flex-direction: row;
 	flex-direction: column; */
-	/* align-items: center; */
-	/* gap: 5px; */
+  /* align-items: center; */
+  /* gap: 5px; */
 }
 
 .chat-sentiment-icon {
-	/* background: red; */
-	text-align: center;
-	font-size: 1.5rem;
+  /* background: red; */
+  text-align: center;
+  font-size: 1.5rem;
 }
 
 /* .agent {
 	align-items: flex-end;
 } */
 .agent .chat-message {
-	background: #e8d7ff;
-	border-radius: 10px 0px 10px 10px;
+  background: #e8d7ff;
+  border-radius: 10px 0px 10px 10px;
 }
 .agent .message-content-row,
 .agent .message-title {
-	flex-direction: row-reverse;
+  flex-direction: row-reverse;
 }
 
 .message-sender {
-	font-weight: 600;
-	align-self: flex-start;
+  font-weight: 600;
+  align-self: flex-start;
 }
 
 .message-title {
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .chat-text {
-	flex: 1;
-	overflow-wrap: anywhere;
-	display: flex;
-	flex-direction: column;
-	gap: 0.5rem;
+  flex: 1;
+  overflow-wrap: anywhere;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .message-time {
-	/* align-self: flex-end; */
-	font-size: 0.8rem;
-	color: #3f3f3f;
-	/* font-weight: 600; */
+  /* align-self: flex-end; */
+  font-size: 0.8rem;
+  color: #3f3f3f;
+  /* font-weight: 600; */
 }
 
 .message-meta {
-	display: flex;
-	gap: 1rem;
+  display: flex;
+  gap: 1rem;
 }
 .message-meta span {
-	background: #a0b2ff;
-	padding: 4px 8px;
-	border-radius: 50vw;
-	margin: 3px 0;
-	font-size: 0.8rem;
-	/* box-shadow: 0 0 3px 0 black; */
+  background: #a0b2ff;
+  padding: 4px 8px;
+  border-radius: 50vw;
+  margin: 3px 0;
+  font-size: 0.8rem;
+  /* box-shadow: 0 0 3px 0 black; */
 }
 
 /* chat type  */
@@ -318,51 +318,51 @@
 } */
 
 .header-checkbox {
-	appearance: none;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	height: 2.1rem;
-	display: inline-block;
-	vertical-align: top;
-	position: relative;
-	margin: 0;
-	cursor: pointer;
-	border: 1px solid #4f565d;
-	background: #fff;
-	transition: background 0.3s, border-color 0.3s, outline 0.2s;
-	width: 2.1rem;
-	border-radius: 0.7rem;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  height: 2.1rem;
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  margin: 0;
+  cursor: pointer;
+  border: 1px solid #4f565d;
+  background: #fff;
+  transition: background 0.3s, border-color 0.3s, outline 0.2s;
+  width: 2.1rem;
+  border-radius: 0.7rem;
 }
 .header-checkbox:after {
-	content: "";
-	display: block;
-	left: 0;
-	top: 0;
-	position: absolute;
-	border: 2px solid #fff;
-	height: 45%;
-	width: 25%;
-	border-top: 0;
-	border-left: 0;
-	left: 38%;
-	top: 20%;
-	transform: rotate(20deg);
-	transition: transform 0.3s ease, opacity 0.2s;
+  content: "";
+  display: block;
+  left: 0;
+  top: 0;
+  position: absolute;
+  border: 2px solid #fff;
+  height: 45%;
+  width: 25%;
+  border-top: 0;
+  border-left: 0;
+  left: 38%;
+  top: 20%;
+  transform: rotate(20deg);
+  transition: transform 0.3s ease, opacity 0.2s;
 }
 .header-checkbox:checked {
-	background-color: #275efe;
-	border-color: #275efe;
-	transition: transform 0.6s cubic-bezier(0.2, 0.85, 0.32, 1.2), opacity 0.3s;
+  background-color: #275efe;
+  border-color: #275efe;
+  transition: transform 0.6s cubic-bezier(0.2, 0.85, 0.32, 1.2), opacity 0.3s;
 }
 .header-checkbox:disabled {
-	background-color: #f6f8ff;
-	border-color: #8f8f8f;
-	cursor: not-allowed;
+  background-color: #f6f8ff;
+  border-color: #8f8f8f;
+  cursor: not-allowed;
 }
 .header-checkbox:disabled:checked {
-	background-color: #8f8f8f;
+  background-color: #8f8f8f;
 }
 
 .header-checkbox:checked:after {
-	transform: rotate(43deg);
+  transform: rotate(43deg);
 }
