@@ -9,27 +9,27 @@
 *,
 *::before,
 *::after {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 /* body {
 } */
 
 #root {
-	width: 100vw;
-	height: 100vh;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .App {
-	display: flex;
-	align-items: center; /* maybe this*/
-	justify-content: center;
-	width: 90%;
-	height: 90%;
-	/* background: violet; */
+    display: flex;
+    align-items: center; /* maybe this*/
+    justify-content: center;
+    width: 90%;
+    height: 90%;
+    /* background: violet; */
 }
