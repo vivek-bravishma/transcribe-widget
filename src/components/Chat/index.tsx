@@ -43,14 +43,24 @@ function Chat() {
             setLatestMessage(data);
         }
 
+        function onReset() {
+            console.log('Reset Event');
+
+            setAdaptiveCardJson({});
+            setMessages([]);
+            setLatestMessage('');
+        }
+
         socket.on('connect', onConnect);
         socket.on('disconnect', onDisconnect);
         socket.on('data', onMessage);
+        socket.on('reset', onReset);
 
         return () => {
             socket.off('connect', onConnect);
             socket.off('disconnect', onDisconnect);
             socket.off('data', onMessage);
+            socket.off('reset', onReset);
         };
     }, []);
 
@@ -123,8 +133,14 @@ function Message({ data }) {
 }
 
 function Header({ data, isConnected }) {
-    // console.log("header--> ", data);
-    const { overallsentiment, greeting_done, recording_alert_done, thankyou_done } = data;
+    // console.log('header--> ', data);
+    const {
+        authentication_done,
+        overallsentiment,
+        greeting_done,
+        recording_alert_done,
+        thankyou_done,
+    } = data;
     // console.log(
     // 	overallsentiment,
     // 	greeting_done,
@@ -134,6 +150,27 @@ function Header({ data, isConnected }) {
     return (
         <div className='chat-header'>
             <div className='overall-sentiment-container'>
+                <div className=' tw-tooltip'>
+                    {authentication_done ? (
+                        <>
+                            <img
+                                className='authentication-icon'
+                                src={`${BASE_URL}/assets/images/authenticated.png`}
+                                alt='auth icon'
+                            />
+                            <span className='tw-tooltip-text'>Authenticated</span>
+                        </>
+                    ) : (
+                        <>
+                            <img
+                                className='authentication-icon'
+                                src={`${BASE_URL}/assets/images/unauthenticated.png`}
+                                alt='auth icon'
+                            />
+                            <span className='tw-tooltip-text'>Unauthenticated</span>
+                        </>
+                    )}
+                </div>
                 <ConnectionState isConnected={isConnected} />
                 {overallsentiment && (
                     <div className='overall-sentiment-icon tw-tooltip'>
