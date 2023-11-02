@@ -11,6 +11,7 @@ function Chat() {
     const [messages, setMessages] = useState<any>([]);
     const [latestMessage, setLatestMessage] = useState<any>('');
     const [adaptiveCardJson, setAdaptiveCardJson] = useState({});
+    const [adaptiveCardData, setAdaptiveCardData] = useState({});
     const seekLastEle = useRef<HTMLDivElement>(null);
 
     const [isConnected, setIsConnected] = useState(socket.connected);
@@ -38,6 +39,9 @@ function Chat() {
             if (data.adaptive_card_json) {
                 setAdaptiveCardJson(data.adaptive_card_json);
             }
+            if (data.adaptive_card_data) {
+                setAdaptiveCardData(data.adaptive_card_data);
+            }
 
             setMessages((prev) => [...prev, data]);
             setLatestMessage(data);
@@ -47,6 +51,7 @@ function Chat() {
             console.log('Reset Event');
 
             setAdaptiveCardJson({});
+            setAdaptiveCardData({});
             setMessages([]);
             setLatestMessage('');
         }
@@ -76,7 +81,7 @@ function Chat() {
                     <div className='last-msg' ref={seekLastEle}></div>
                 </div>
             </div>
-            <AdaptiveCardComp card={adaptiveCardJson} />
+            <AdaptiveCardComp card={adaptiveCardJson} cardData={adaptiveCardData} />
             {/* <AdaptiveCard card={card} /> */}
         </div>
     );

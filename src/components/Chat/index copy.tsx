@@ -1,127 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
-import io from 'socket.io-client';
 import './style.css';
 import CONFIG from '../../utils/config';
-import soundwaveImg from '../../assets/images/soundwave.gif';
+import { ConnectionState } from '../Socket/ConnectionState';
+import { socket } from '../../utils/socket';
+import AdaptiveCardComp from '../AdaptiveCard';
 
-const { BASE_URL, SOCKET_URL } = CONFIG;
-
-const AGENT = 'Agent';
-const CUSTOMER = 'Customer';
-
-// const dumData = [
-// 	{
-// 		intent: "test",
-// 		topics: "banking",
-// 		sentiment: "128545",
-// 		transcription_quality: "",
-// 		original_language: "",
-// 		translated_text:
-// 			"The company itself is a very successful company. And those who are repulsed by the trouble of life, let no one be blinded by the hatred of the soul, which I shall never explain here.",
-// 		original_text:
-// 			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque quos repellat molestiae quia vitae, fugiat eligendi nemo porro itaque obcaecati neque et sequi autem animi odio quo hic illo numquam ipsa explicabo.",
-// 		confidence: 1,
-// 		utcTimestamp: "12:15",
-// 		speaker: CUSTOMER,
-// 		bodyRaw: "{{ci.text}}",
-// 		overallsentiment: "",
-// 		greeting_done: true,
-// 		recording_alert_done: true,
-// 		thankyou_done: false,
-// 	},
-// 	{
-// 		intent: "test",
-// 		topics: "banking",
-// 		sentiment: "128545",
-// 		transcription_quality: "",
-// 		original_language: "",
-// 		translated_text:
-// 			"The company itself is a very successful company. And those who are repulsed by the trouble of life, let no one be blinded by the hatred of the soul, which I shall never explain here.",
-// 		original_text:
-// 			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque quos repellat molestiae quia vitae, fugiat eligendi nemo porro itaque obcaecati neque et sequi autem animi odio quo hic illo numquam ipsa explicabo.",
-// 		confidence: 1,
-// 		utcTimestamp: "12:15",
-// 		speaker: AGENT,
-// 		bodyRaw: "{{ci.text}}",
-// 		overallsentiment: "",
-// 		greeting_done: true,
-// 		recording_alert_done: true,
-// 		thankyou_done: false,
-// 	},
-// 	{
-// 		intent: "test",
-// 		topics: "banking",
-// 		sentiment: "",
-// 		transcription_quality: "",
-// 		original_language: "",
-// 		translated_text: "what do you say??",
-// 		original_text: "Tu ergo quid dicis??",
-// 		confidence: 0.5,
-// 		utcTimestamp: "12:15",
-// 		speaker: AGENT,
-// 		bodyRaw: "{{ci.text}}",
-// 		overallsentiment: "",
-// 		greeting_done: true,
-// 		recording_alert_done: true,
-// 		thankyou_done: false,
-// 	},
-// 	{
-// 		intent: "test",
-// 		topics: "banking",
-// 		sentiment: "129320",
-// 		transcription_quality: "",
-// 		original_language: "",
-// 		translated_text: "",
-// 		original_text:
-// 			"{{context.subscriptiontext.details.transcriptionResults[0].text}}",
-// 		confidence: 0.2,
-// 		utcTimestamp: "12:15",
-// 		speaker: "{{cc.speaker}}",
-// 		bodyRaw: "{{ci.text}}",
-// 		overallsentiment: "128545",
-// 		greeting_done: true,
-// 		recording_alert_done: true,
-// 		thankyou_done: false,
-// 	},
-// ];
+const { BASE_URL } = CONFIG;
 
 function Chat() {
     const [messages, setMessages] = useState<any>([]);
-    const [newMessage, setNewMessage] = useState('');
     const [latestMessage, setLatestMessage] = useState<any>('');
+    const [adaptiveCardJson, setAdaptiveCardJson] = useState({});
     const seekLastEle = useRef<HTMLDivElement>(null);
 
-    // --- dev ---
-
-    // const [messages, setMessages] = useState<any>(dumData);
-    // const [latestMessage, setLatestMessage] = useState<any>(dumData);
-    // useEffect(() => {
-    // 	messages.forEach((data, index) => {
-    // 		console.log("hi=> ", index);
-    // 		setLatestMessage(data);
-    // 		setMessages((prev) => [...prev, data]);
-    // 	});
-
-    // 	return () => {
-    // 		messages.forEach((data, index) => {
-    // 			console.log("hello=> ", index);
-    // 			setLatestMessage("");
-    // 			setMessages("");
-    // 		});
-    // 	};
-    // }, []);
-
-    // XXX dev XXX
-
-    const handleSendMessage = (e) => {
-        e.preventDefault();
-        if (newMessage.trim() === '') return;
-
-        const updatedMessages = [...messages, { text: newMessage, sender: 'You' }];
-        setMessages(updatedMessages);
-
-        setNewMessage('');
-    };
+    const [isConnected, setIsConnected] = useState(socket.connected);
 
     const Scroll = () => {
         seekLastEle.current?.scrollIntoView();
@@ -132,59 +24,65 @@ function Chat() {
     }, [messages]);
 
     useEffect(() => {
-        const socket = io(SOCKET_URL);
+        function onConnect() {
+            setIsConnected(true);
+        }
 
-        socket.on('connect', () => {
-            console.log('connected');
-        });
-        socket.on('disconnect', (res) => {
-            console.log('disconnect', res);
-        });
+        function onDisconnect() {
+            setIsConnected(false);
+        }
 
-        socket.on('data', (data) => {
+        function onMessage(data) {
             console.log('Received data from server:', data);
 
-            // const text = data.details.transcriptionResults[0]?.text;
-            const { original_text: text, speaker: sender } = data;
-            console.log('text--> ', text);
+            if (data.adaptive_card_json) {
+                setAdaptiveCardJson(data.adaptive_card_json);
+            }
 
             setMessages((prev) => [...prev, data]);
             setLatestMessage(data);
-        });
+        }
+
+        function onReset() {
+            console.log('Reset Event');
+
+            setAdaptiveCardJson({});
+            setMessages([]);
+            setLatestMessage('');
+        }
+
+        socket.on('connect', onConnect);
+        socket.on('disconnect', onDisconnect);
+        socket.on('data', onMessage);
+        socket.on('reset', onReset);
 
         return () => {
-            socket.disconnect();
+            socket.off('connect', onConnect);
+            socket.off('disconnect', onDisconnect);
+            socket.off('data', onMessage);
+            socket.off('reset', onReset);
         };
     }, []);
 
     return (
-        <div className='chat-container'>
-            <Header data={latestMessage} />
-            <div className='chat-messages'>
-                {messages.map((data, index) => {
-                    if (!data.original_text) return;
-                    return <Message data={data} key={index} />;
-                })}
-                <div className='last-msg' ref={seekLastEle}></div>
+        <div className='main-widget-container'>
+            <div className='chat-container'>
+                <Header data={latestMessage} isConnected={isConnected} />
+                <div className='chat-messages'>
+                    {messages.map((data, index) => {
+                        if (!data.original_text) return;
+                        return <Message data={data} key={index} />;
+                    })}
+                    <div className='last-msg' ref={seekLastEle}></div>
+                </div>
             </div>
-            {/* 
-			<form className="chat-input" onSubmit={handleSendMessage}>
-				<input
-					className="chat-box"
-					type="text"
-					placeholder="Type your message..."
-					value={newMessage}
-					onChange={(e) => setNewMessage(e.target.value)}
-				/>
-				<button className="chat-btn">Send</button>
-			</form>
-			 */}
+            {/* <AdaptiveCardComp card={adaptiveCardJson} /> */}
+            {/* <AdaptiveCard card={card} /> */}
         </div>
     );
 }
 
 function Message({ data }) {
-    // console.log("======================== ", data);
     const {
         intent,
         topics,
@@ -234,9 +132,15 @@ function Message({ data }) {
     );
 }
 
-function Header({ data }) {
-    // console.log("header--> ", data);
-    const { overallsentiment, greeting_done, recording_alert_done, thankyou_done } = data;
+function Header({ data, isConnected }) {
+    // console.log('header--> ', data);
+    const {
+        authentication_done,
+        overallsentiment,
+        greeting_done,
+        recording_alert_done,
+        thankyou_done,
+    } = data;
     // console.log(
     // 	overallsentiment,
     // 	greeting_done,
@@ -245,57 +149,67 @@ function Header({ data }) {
     // );
     return (
         <div className='chat-header'>
+            <div className='overall-sentiment-container'>
+                <div className=' tw-tooltip'>
+                    {authentication_done ? (
+                        <>
+                            <img
+                                className='authentication-icon'
+                                src={`${BASE_URL}/assets/images/authenticated.png`}
+                                alt='auth icon'
+                            />
+                            <span className='tw-tooltip-text'>Authenticated</span>
+                        </>
+                    ) : (
+                        <>
+                            <img
+                                className='authentication-icon'
+                                src={`${BASE_URL}/assets/images/unauthenticated.png`}
+                                alt='auth icon'
+                            />
+                            <span className='tw-tooltip-text'>Unauthenticated</span>
+                        </>
+                    )}
+                </div>
+                <ConnectionState isConnected={isConnected} />
+                {overallsentiment && (
+                    <div className='overall-sentiment-icon tw-tooltip'>
+                        {String.fromCodePoint(overallsentiment)}
+                        <span className='tw-tooltip-text'>Overall Sentiment</span>
+                    </div>
+                )}
+            </div>
             <div className='logo-conainter'>
                 <img src={`${BASE_URL}/assets/images/soundwave.gif`} alt='SoundWave gif' />
             </div>
-            <div className='overall-sentiment-container'>
-                {overallsentiment && String.fromCodePoint(overallsentiment)}
-            </div>
             <div className='checkbox-container'>
                 <div className='checkbox-inner-contnr'>
-                    <div className=''>
-                        {/* <input
-						className="header-checkbox"
-						disabled={true}
-						checked={greeting_done}
-						type="checkbox"
-					/> */}
+                    <div className='cb-ctr tw-tooltip'>
                         <div className='cb-icon'>
                             {greeting_done
                                 ? String.fromCodePoint(9989)
                                 : String.fromCodePoint(10060)}
                         </div>
-                        <label className='header-cb-text'>Greeting</label>
+                        <label className='header-cb-text'>Greeting Done</label>
+                        <span className='tw-tooltip-text'>Greeting Done</span>
                     </div>
-                    <div className=''>
-                        {/* <input
-						className="header-checkbox"
-						type="checkbox"
-						disabled={true}
-						checked={recording_alert_done}
-					/> */}
+                    <div className='cb-ctr tw-tooltip'>
                         <div className='cb-icon'>
                             {recording_alert_done
                                 ? String.fromCodePoint(9989)
                                 : String.fromCodePoint(10060)}
                         </div>
-
                         <label className='header-cb-text'>Recording Alert</label>
+                        <span className='tw-tooltip-text'>Recording Alert Done</span>
                     </div>
-                    <div className=''>
-                        {/* <input
-						className="header-checkbox"
-						type="checkbox"
-						disabled={true}
-						checked={thankyou_done}
-					/> */}
+                    <div className='cb-ctr tw-tooltip'>
                         <div className='cb-icon'>
                             {thankyou_done
                                 ? String.fromCodePoint(9989)
                                 : String.fromCodePoint(10060)}
                         </div>
-
                         <label className='header-cb-text'>Thank You</label>
+                        <span className='tw-tooltip-text'>Thank You Done</span>
                     </div>
                 </div>
             </div>
@@ -304,32 +218,3 @@ function Header({ data }) {
 }
 
 export default Chat;
-
-// return (
-//   <div className={`chat-message-container ${speaker} `}>
-//     {/* <div className="message-row"> */}
-//       <div className={`chat-message`}>
-//         <div className="chat-message-title">
-//           <span className="chat-sender">{speaker}</span>
-//           <span className="chat-time">[{utcTimestamp}]</span>
-//         </div>
-//         <span
-//           className="chat-text"
-//           style={{
-//             color: `rgba(0, 0, 0, ${
-//               confidence > 0 ? confidence : 0.1
-//             })`,
-//           }}>
-//           <span className="original-text">{original_text}</span>
-//           <span className="translated-text">
-//             {translated_text}
-//           </span>
-//         </span>
-//         {/* <span className="chat-time"> {utcTimestamp} </span> */}
-//       </div>
-//     {/* </div> */}
-//     <div className="chat-sentiment-icon">
-//       {String.fromCodePoint(sentiment)}
-//     </div>
-//   </div>
-// );
